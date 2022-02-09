@@ -1,0 +1,60 @@
+e1-1
+
+10
+12
+8
+3
+6
+a
+b
+19
+#f
+4
+16
+
+e1-2
+
+(/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5))))) (* 3 (- 6 2) (- 2 7)))
+
+e1-3
+Exercise 1.3: Define a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
+
+(define (sum-of-square x y) (+ (* x x) (* y y)))
+(define (>= x y) (not (< x y)))
+(define (myfunc x y z)
+	(cond ((and (>= x y) (>= y z)) (sum-of-square x y))
+		((and (>= x y) (>= z y)) (sum-of-square x z))
+		(else (sum-of-square y z))))
+
+
+e1-4
+Exercise 1.4:Observe that our model of evaluation allows for combinations whose operators are compound expressions. Use this observation to describe the behavior of the following procedure:
+
+(define (a-plus-abs-b a b)
+  ((if (> b 0) + -) a b))
+	
+if b is strictly a postive number, then the expression "(if (> b 0) + -)" will be +, so the result will be a + b.
+in other cases, the result will be a - b.
+So, the result is a + |b|
+
+e1-5
+
+应用序 (applicative-order) 以类似 depth-first 的方式展开, 即; 
+To evaluate a combination, do the following:
+; 1. Evaluate the subexpressions of the combination.
+; 2. Apply the procedure that is the value of the leftmost subexpression; (the operator) to the arguments that are the values of the other; subexpressions (the operands).
+
+
+If the interpreter is using applicative-order, it will evaluate 0 first, the value is 0.Then it will evaluate (p), which will evaluate to (p).Definitely, it makes infinite loop.So, your interpreter will get no result.
+
+Actually, Mit-schema is using applicative-order.
+
+on the oppsite, 正则序 (normal-order) 以类似 breadth-first 的方式展开, 即总是先展开 leftmost element / procedure, 而展开 procedure 的方式是不断使用实际参数 actual-arguments 去替换(substitute / replace) procedure <body> 中的形式参数 formal-parameters.
+
+If the interpreter is using normal-order,it will fully expand and then reduce.In this model, the interpreter will not evaluate the operands until their values are actually needed.In this case, it will be expanded to 
+"(if (= 0 0)
+    0
+    (p))",
+
+Since (= 0 0) is true, it will not evaluate the expression (p) and the result will be 0.
+
