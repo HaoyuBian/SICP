@@ -1,4 +1,20 @@
-(define (p) (p)) (define (test x y)
-(if (= x 0) 0 y))
+(define (square x) (* x x))
 
-(test 0 (p))
+(define (good-enough? pre-guess guess) 
+	(< (abs (/ (- pre-guess guess) guess)) 0.000000001))
+
+(define (improve guess x)
+	(average guess (/ x guess)))
+
+(define (average x y)
+	(/ (+ x y) 2))
+
+(define (sqrt-iter guess x)
+	(if (good-enough? guess (improve guess x))
+		guess 
+		(sqrt-iter (improve guess x) x)))
+
+(define (sqrt x)
+	(sqrt-iter 1.0 x))
+
+(sqrt 123456789012345)
