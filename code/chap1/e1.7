@@ -1,0 +1,27 @@
+#|For large numbers, the computation may be never finished.
+Because of rounding errors, the  function `improve guess x` cannot improve the guess anymore as the smallest possible difference between `square guess` and x is larger than 0.001.T
+his is because with numbers of this order magnitude, the distance between two consecutive floating point numbers is larger than 0.001
+
+由于计算机存在精度误差，对于大数而言，由于精度不够，在递归的过程中很可能产生(abs (- (square guess) x)) > 0.001 但是，通过improve 方法，(average guess (/ x guess)) 已经无法再提升的情况。
+
+For small numbers, the problem is precision.We can’t have an accurate answer if x is smaller than the precision of 0.001
+|#
+
+(define (square x) (* x x))
+
+(define (good-enough? pre-guess guess) 
+	(< (abs (/ (- pre-guess guess) guess)) 0.000000001))
+
+(define (improve guess x)
+	(average guess (/ x guess)))
+
+(define (average x y)
+	(/ (+ x y) 2))
+
+(define (sqrt-iter guess x)
+	(if (good-enough? guess (improve guess x))
+		guess 
+		(sqrt-iter (improve guess x) x)))
+
+(define (sqrt x)
+	(sqrt-iter 1.0 x))
