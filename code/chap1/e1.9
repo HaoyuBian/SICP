@@ -10,3 +10,14 @@ But when we describe a process as following a paern that is, say, linearly re
 `递归过程`时，论述的是一个语法形式上的事实，即调用了自己。当说某一个计算过程有某种形式的递归时（process recursive）
 我们说的是这个计算过程的进展方式。有可能一个递归的程序会产生一个迭代的计算过程。
 书中举例为斐波那契数列的计算方式|#
+
+(define (+ a b)
+	(if (= a 0) b (inc (+ (dec a) b))))
+
+process recursive
+
+
+(define (+ a b)
+(if (= a 0) b (+ (dec a) (inc b))))
+
+process interative
